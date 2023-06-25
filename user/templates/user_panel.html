@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.vertical-menu {
+  width: 200px;
+}
+
+.vertical-menu a {
+  background-color: #eee;
+  color: #000000;
+  display: block;
+  padding: 12px;
+  text-decoration: none;
+}
+
+.vertical-menu a:hover {
+  background-color: rgba(204, 204, 204, 0.65);
+}
+
+.vertical-menu a.active {
+  background-color: #225a44;
+  color: white;
+}
+</style>
+</head>
+<body>
+
+
+
+<div class="vertical-menu">
+  <a href="#" class="active">{{ user.first_name }} {{ user.last_name }}</a>
+  <a href="/user">My Profile</a>
+  <a href="/user/orders">My Orders</a>
+  <a href="/logout">Logout</a>
+</div>
+
+</body>
+</html>

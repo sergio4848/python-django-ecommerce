@@ -1,0 +1,106 @@
+{% extends 'homebase.html' %}
+{% load static %}
+{% block title %} {{ product.title }} | {{ setting.title }} {% endblock %}
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% block head %}
+    <link rel='shortcut icon' type='image/x-icon' href='{{ setting.icon.url }}'/>
+{% endblock %}
+
+
+{% block content %}
+<div id="mainBody">
+	<div class="container">
+	<div class="row">
+<!-- Sidebar ================================================== -->
+<div id="sidebar" class="span3">
+		<div class="well well-small"><a id="myCart" href="/shopcart"><img src="{% static 'themes/images/ico-cart.png' %}" alt="cart">{{ request.session.cart_items }} Items in your cart  </a></div>
+		<ul id="sideManu" class="nav nav-tabs nav-stacked">
+			{% load mptt_tags %}
+            {% recursetree category %}
+			<li><a href="/category/{{ node.id }}/{{ node.slug }}">{{ node.title}}</a></li>
+            {% endrecursetree %}
+		</ul>
+		<br/>
+
+	</div>
+<!-- Sidebar end=============================================== -->
+	<div class="span9">
+    <ul class="breadcrumb">
+    <li><a href="/">Home</a> <span class="divider">/</span></li>
+    <li><a href="#">{{ product.title }}</a> <span class="divider">/</span></li>
+    <li class="active">Product Details</li>
+        {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-{{message.tags}}" role="alert">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+    </ul>
+	<div class="row">
+			<div id="gallery" class="span3">
+            <a href="{{ product.image.url }}" title="Fujifilm FinePix S2950 Digital Camera">
+				<img src="{{ product.image.url }}" style="width:100%" alt="Fujifilm FinePix S2950 Digital Camera"/>
+            </a>
+
+			</div>
+			<div class="span6">
+				<h3>{{ product.title }} </h3>
+				<small>- {{ product.category.title}}</small>
+				<hr class="soft"/>
+                {% if user.id is not None %}
+				<form class="form-horizontal qtyFrm" action="/order/addtoshopcart/{{ product.id }}" method="post">
+                    {% csrf_token %}
+				  <div class="control-group">
+					<label class="control-label"><span>{{ product.price }} TL</span></label>
+					<div class="controls">
+					QUANTITY: <input type="number" name="quantity" class="span1" min="0" max="{{ product.amount }}" value="1"/><br><br>
+
+					  <button type="submit" class="btn btn-large btn-primary pull-right"> Add to cart <i class=" icon-shopping-cart"></i></button>
+					</div>
+				  </div>
+				</form>
+                {% else %}
+                <a href="/login" class="btn-success">Login</a>
+                <a href="/signup" class="btn-success">Register</a>
+                {% endif %}
+
+				<hr class="soft"/>
+				<h4>{{ product.amount }} kontenjan kaldı.</h4>
+
+				<hr class="soft clr"/>
+
+				<br class="clr"/>
+			<a href="#" name="detail"></a>
+			<hr class="soft"/>
+			</div>
+
+			<div class="span9">
+            <ul id="productDetail" class="nav nav-tabs">
+              <li class="active"><a href="#home" data-toggle="tab">Product Details</a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+              <div class="tab-pane fade active in" id="home">
+			  <h4>Product Information</h4>
+
+
+
+				<p>{{ product.detail | safe }}</p>
+              </div>
+
+			<hr class="soft"/>
+			</div>
+		</div>
+				<br class="clr">
+					 </div>
+		</div>
+          </div>
+
+	</div>
+</div>
+</div> </div>
+</div>
+<!-- MainBody End ============================= -->
+ {% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'homebase.html' %}
+{% load static %}
+{% block title %} Register | {{ setting.title }} {% endblock %}
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% block head %}
+    <link rel='shortcut icon' type='image/x-icon' href='{{ setting.icon.url }}'/>
+{% endblock %}
+
+
+{% block content %}
+    <div id="mainBody">
+	<div class="container">
+	<div class="row">
+<div id="sidebar" class="span3">
+		<div class="well well-small"><a id="myCart" href="/shopcart"><img src="{% static 'themes/images/ico-cart.png' %}" alt="cart">{{ request.session.cart_items }} Items in your cart  </a></div>
+		<ul id="sideManu" class="nav nav-tabs nav-stacked">
+			{% load mptt_tags %}
+            {% recursetree category %}
+			<li><a href="/category/{{ node.id }}/{{ node.slug }}">{{ node.title}}</a></li>
+            {% endrecursetree %}
+		</ul>
+		<br/>
+
+	</div>
+<!-- Sidebar end=============================================== -->
+<div class="span9">
+    <ul class="breadcrumb">
+		<li><a href="/">Home</a> <span class="divider">/</span></li>
+		<li class="active">Register</li>
+    </ul>
+	<h3> Register</h3>
+	<hr class="soft"/>
+
+	<div class="row">
+
+		<div class="span4">
+			<div class="well">
+			<h5>REGISTER</h5>
+			{% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-{{message.tags}}" role="alert">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+   <form method="post">
+       {% csrf_token %}
+    {%  for field in form %}
+        <p>
+            {{ field.label_tag }}<br>
+            {{ field }}
+            {% if field.help_text %}
+                <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+            {% endfor %}
+        </p>
+    {% endfor %}
+    <button type="submit">Kayıt Ol</button>
+   </form>
+		</div>
+		</div>
+	</div>
+
+</div>
+</div></div>
+</div>
+<!-- MainBody End ============================= -->
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'homebase.html' %}
+{% load static %}
+{% block title %} About Us | {{ setting.title }} {% endblock %}
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% block head %}
+    <link rel='shortcut icon' type='image/x-icon' href='{{ setting.icon.url }}'/>
+{% endblock %}
+
+
+{% block content %}
+
+<div id="mainBody">
+<div class="container">
+	<hr class="soften">
+	<h1>About Us</h1>
+	<hr class="soften"/>
+
+	<div class="row">
+	<div class="span12">
+	{{ setting.aboutus | safe }}
+    </div>
+	</div>
+</div>
+</div>
+
+
+ {% endblock %}

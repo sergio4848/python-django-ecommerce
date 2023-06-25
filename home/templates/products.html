@@ -1,0 +1,86 @@
+{% extends 'homebase.html' %}
+{% load static %}
+{% block title %} {{ categorydata.title }} | {{ setting.title }} {% endblock %}
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% block head %}
+    <link rel='shortcut icon' type='image/x-icon' href='{{ setting.icon.url }}'/>
+{% endblock %}
+
+
+{% block content %}
+    <div id="mainBody">
+	<div class="container">
+	<div class="row">
+<div id="sidebar" class="span3">
+		<div class="well well-small"><a id="myCart" href="/shopcart"><img src="{% static 'themes/images/ico-cart.png' %}" alt="cart">{{ request.session.cart_items }} Items in your cart  </a></div>
+		<ul id="sideManu" class="nav nav-tabs nav-stacked">
+			{% load mptt_tags %}
+            {% recursetree category %}
+			<li><a href="/category/{{ node.id }}/{{ node.slug }}">{{ node.title}}</a></li>
+            {% endrecursetree %}
+		</ul>
+		<br/>
+
+	</div>
+<!-- Sidebar end=============================================== -->
+	<div class="span9">
+    <ul class="breadcrumb">
+		<li><a href="/">Home</a> <span class="divider">/</span></li>
+		<li class="active">{{ categorydata.title }}</li>
+    </ul>
+	<h3> {{ categorydata.title }} <small class="pull-right"> </small></h3>
+	<hr class="soft"/>
+	<p>
+		Nowadays the lingerie industry is one of the most successful business spheres.We always stay in touch with the latest fashion tendencies - that is why our goods are so popular and we have a great number of faithful customers all over the country.
+	</p>
+
+
+<div id="myTab" class="pull-right">
+ <a href="#blockView" data-toggle="tab"><span class="btn btn-large btn-primary"><i class="icon-th-large"></i></span></a>
+</div>
+<br class="clr"/>
+<div class="tab-content">
+
+
+	<div class="tab-pane  active" id="blockView">
+		<ul class="thumbnails">
+            {% for rs in products %}
+			<li class="span3">
+			  <div class="thumbnail">
+				<a href="/product/{{ rs.id }}/{{ rs.slug }}"><img src="{{ rs.image.url }}" alt=""/></a>
+				<div class="caption">
+				  <h5>{{ rs.title }}</h5>
+				  <p>
+					{{ rs.description }}
+				  </p>
+				   <h4 style="text-align:center"><a class="btn" href="/product/{{ rs.id }}/{{ rs.slug }}"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">{{ rs.price }}TL</a></h4>
+				</div>
+			  </div>
+			</li>
+			{% endfor %}
+		  </ul>
+	<hr class="soft"/>
+	</div>
+</div>
+
+	<a href="compair.html" class="btn btn-large pull-right">Compair Product</a>
+	<div class="pagination">
+			<ul>
+			<li><a href="#">&lsaquo;</a></li>
+			<li><a href="#">1</a></li>
+			<li><a href="#">2</a></li>
+			<li><a href="#">3</a></li>
+			<li><a href="#">4</a></li>
+			<li><a href="#">...</a></li>
+			<li><a href="#">&rsaquo;</a></li>
+			</ul>
+			</div>
+			<br class="clr"/>
+</div>
+</div>
+</div>
+</div>
+<!-- MainBody End ============================= -->
+{% endblock %}

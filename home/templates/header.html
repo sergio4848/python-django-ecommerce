@@ -1,0 +1,48 @@
+{% load static %}
+<div id="header">
+<div class="container">
+<div id="welcomeLine" class="row">
+    {% if user.id is not None %}
+	<div class="span6">Welcome!<strong> {{ user.first_name }} {{ user.last_name }}</strong></div>
+        {% else %}
+       <div class="span6"><a href="/login">Login!</a><strong> TO BUY SPORT PRODUCTS</strong></div>
+    {% endif %}
+	<div class="span6">
+	<div class="pull-right">
+		<a href="product_summary.html"><span class="">Fr</span></a>
+		<a href="product_summary.html"><span class="">Es</span></a>
+		<span class="btn btn-mini">En</span>
+		<a href="product_summary.html"><span></span></a>
+		<span class="btn btn-mini">{{ total }}TL</span>
+		<a href="product_summary.html"><span class=""></span></a>
+		<a href="/shopcart/"><span class="btn btn-mini btn-primary"><i class="icon-shopping-cart icon-white"></i> [ {{ request.session.cart_items }} ] Items in your cart </span> </a>
+	</div>
+	</div>
+</div>
+<!-- Navbar ================================================== -->
+<div id="logoArea" class="navbar">
+<a id="smallScreen" data-target="#topMenu" data-toggle="collapse" class="btn btn-navbar">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+</a>
+  <div class="navbar-inner">
+
+    <ul id="topMenu" class="nav pull-right">
+	 <li class=""><a href="/">Home</a></li>
+	 <li class=""><a href="/hakkimizda">About Us</a></li>
+     {% if user.id is not None %}
+        <li class=""><a href="/user">{{ user.first_name }} {{ user.last_name }}</a></li>
+         <li class=""><a href="/logout">Logout</a></li>
+	 <li class="">
+         {% else %}
+	 <li class=""><a href="/login">Login</a></li>
+         <li class=""><a href="/signup">Register</a></li>
+         {% endif %}
+	</li>
+    </ul>
+  </div>
+</div>
+</div>
+</div>
+<!-- Header End====================================================================== -->

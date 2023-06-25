@@ -1,0 +1,168 @@
+{% extends 'homebase.html' %}
+
+{% block title %} Order Details | {{ setting.title }} {% endblock %}
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% load static %}
+
+{% block content %}
+ <!-- Checkout Start -->
+       <div id="mainBody">
+	<div class="container">
+	<div class="row">
+<!-- Sidebar ================================================== -->
+<div id="sidebar" class="span3">
+		<div class="well well-small"><a id="myCart" href="/shopcart"><img src="{% static 'themes/images/ico-cart.png' %}" alt="cart">{{ request.session.cart_items }} Items in your cart  </a></div>
+		<ul id="sideManu" class="nav nav-tabs nav-stacked">
+			{% load mptt_tags %}
+            {% recursetree category %}
+			<li><a href="/category/{{ node.id }}/{{ node.slug }}">{{ node.title}}</a></li>
+            {% endrecursetree %}
+		</ul>
+		<br/>
+
+	</div>
+<!-- Sidebar end=============================================== -->
+
+	<div class="span9">
+    <ul class="breadcrumb">
+		<li><a href="/">Home</a> <span class="divider">/</span></li>
+		<li class="active"> ORDER FORM</li>
+    </ul>
+                  <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="col-lg-8" style="padding-left: 300px;">
+                        <form class="checkout-inner">
+                            <div class="billing-address">
+                                <h2>Address</h2>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>First Name</label>
+                                        <input class="form-control" name="first_name"  value="{{ user.first_name }}" type="text" placeholder="First Name">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Last Name"</label>
+                                        <input class="form-control" name="last_name"  value="{{ user.last_name }}" type="text" placeholder="Last Name">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Mobile No</label>
+                                        <input class="form-control" name="phone" value="{{ profile.phone }}" type="number" placeholder="Mobile No">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Address</label>
+                                        <input class="form-control" name="address" value="{{ profile.address }}" type="text" placeholder="Address">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>City</label>
+                                        <select name="city" class="input" id="id_city">
+                                    <option value="{{ profile.city }}" selected>{{ profile.city }}</option>
+                                    <option value="İstanbul">Istanbul</option>
+                                    <option value="Ankara">Ankara</option>
+                                    <option value="İzmir">Izmir</option>
+                                    <option value="Bursa">Bursa</option>
+                                    <option value="Konya">Konya</option>
+                                    <option value="Yozgat">Yozgat</option>
+                                </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Country</label>
+                                        <input class="form-control" name="country" type="text" value="{{ profile.country }}" placeholder="City">
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                        <div class="shiping-methods">
+                            <div class="section-title">
+                                <h4 class="title">Payment Information</h4>
+                            </div>
+                            <p><label for="id_first_name">Total: {{ total }} TL </label>
+                                <input type="text" name="total" class="input" readonly value="{{ total }}TL"></p>
+                            <p><label for="id_first_name">Credit Card Holder</label>
+                                <input type="text" name="holder" class="input"  value=""></p>
+                            <p><label for="id_first_name">Credit Card Number</label>
+                                <input type="text" name="number" class="input"  value=""></p>
+                            <p><label for="id_first_name">Credit Exp Date/Year</label>
+                                <input type="text" name="ecpdate" class="input"  placeholder="mm/yy"></p>
+                            <p><label for="id_first_name">Security Number</label>
+                                <input type="text" name="secnumber" class="input"  value=""></p>
+                        </div>
+                        </div>
+
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="checkout-inner">
+                            <div class="checkout-summary">
+
+                                <h2>Grand Total<span>{{total}}TL</span></h2>
+                            </div>
+
+                            <div class="checkout-payment">
+
+                                <div class="checkout-btn">
+                                    <button>Place Order</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </form>
+                </div>
+            </div>
+        </div>
+        <!-- Checkout End -->
+
+    <!-- Cart Start -->
+        <div class="cart-page">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="cart-page-inner">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Title</th>
+				  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+                    <th>Delete</th>
+				</tr>
+              </thead>
+              <tbody>
+              {% for rs in shopcart %}
+                <tr>
+                  <td> <img width="60" src="{{ rs.product.image.url }}" alt=""/></td>
+                  <td>{{ rs.product.title }}</td>
+                  <td>{{ rs.product.price }} TL</td>
+                  <td>{{ rs.quantity }}</td>
+                  <td>{{ rs.amount }}</td>
+                <td><a href="/order/deletefromcart/{{ rs.id }}">DELETE</a></td>
+                </tr>
+				{% endfor %}
+
+                <tr>
+                  <td colspan="6" style="text-align:right">Total Price:	</td>
+                  <td> {{ total }}TL</td>
+                </tr>
+
+				 <tr>
+                  <td colspan="6" style="text-align:right"><strong>TOTAL  {{ total }}TL</strong></td>
+                  <td class="label label-important" style="display:block"> <strong>  {{ total }}TL </strong></td>
+
+                </tr>
+				</tbody>
+            </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Cart End -->
+
+ {% endblock %}

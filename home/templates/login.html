@@ -1,0 +1,63 @@
+{% extends 'homebase.html' %}
+{% load static %}
+{% block title %} Login | {{ setting.title }} {% endblock %}
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% block head %}
+    <link rel='shortcut icon' type='image/x-icon' href='{{ setting.icon.url }}'/>
+{% endblock %}
+
+
+{% block content %}
+    <div id="mainBody">
+	<div class="container">
+	<div class="row">
+<div id="sidebar" class="span3">
+		<div class="well well-small"><a id="myCart" href="/shopcart"><img src="{% static 'themes/images/ico-cart.png' %}" alt="cart">{{ request.session.cart_items }} Items in your cart  </a></div>
+		<ul id="sideManu" class="nav nav-tabs nav-stacked">
+			{% load mptt_tags %}
+            {% recursetree category %}
+			<li><a href="/category/{{ node.id }}/{{ node.slug }}">{{ node.title}}</a></li>
+            {% endrecursetree %}
+		</ul>
+		<br/>
+
+	</div>
+<!-- Sidebar end=============================================== -->
+<div class="span9">
+    <ul class="breadcrumb">
+		<li><a href="/">Home</a> <span class="divider">/</span></li>
+		<li class="active">Login</li>
+    </ul>
+	<h3> Login</h3>
+	<hr class="soft"/>
+
+	<div class="row">
+
+		<div class="span4">
+			<div class="well">
+			<h5>LOGIN</h5>
+			{% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-{{message.tags}}" role="alert">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+   <form action="" method="post">
+       {% csrf_token %}
+    <input type="text" name="username" placeholder="Username" id="username"><br>
+  <input type="password" name="password" placeholder="password" id="password"><br>
+  <a href="#" class="forgot">forgot password?</a>
+  <input type="submit" value="Login">
+   </form>
+		</div>
+		</div>
+	</div>
+
+</div>
+</div></div>
+</div>
+<!-- MainBody End ============================= -->
+{% endblock %}

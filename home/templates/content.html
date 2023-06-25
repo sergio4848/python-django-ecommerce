@@ -1,0 +1,78 @@
+{% load static %}
+<div id="mainBody">
+	<div class="container">
+	<div class="row">
+<!-- Sidebar ================================================== -->
+	<div id="sidebar" class="span3">
+		<div class="well well-small"><a id="myCart" href="/shopcart"><img src="{% static 'themes/images/ico-cart.png' %}" alt="cart">{{ request.session.cart_items }} Items in your cart  </a></div>
+		<ul id="sideManu" class="nav nav-tabs nav-stacked">
+			{% load mptt_tags %}
+            {% recursetree category %}
+			<li><a href="/category/{{ node.id }}/{{ node.slug }}">{{ node.title}}</a></li>
+            {% endrecursetree %}
+		</ul>
+		<br/>
+
+	</div>
+<!-- Sidebar end=============================================== -->
+		<div class="span9">		
+			<h4>Latest Products </h4>
+			  <ul class="thumbnails">
+                  {% for rs in lastproducts %}
+				<li class="span3">
+				  <div class="thumbnail">
+					<a  href="/product/{{ rs.id }}/{{ rs.slug }}"><img src="{{ rs.image.url }}" alt=""/></a>
+					<div class="caption">
+					  <h5>{{ rs.title }}</h5>
+					  <p>
+						{{ rs.category.title }}
+					  </p>
+
+					  <h4 style="text-align:center"><a class="btn" href="/product/{{ rs.id }}/{{ rs.slug }}"> <i class="icon-zoom-in"></i></a> <a class="btn" href="/product/{{ rs.id }}/{{ rs.slug }}">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="/product/{{ rs.id }}/{{ rs.slug }}">{{ rs.price }} TL</a></h4>
+					</div>
+				  </div>
+				</li>
+				{% endfor %}
+			  </ul>
+
+		</div>
+		<h4>Random Products </h4>
+			  <ul class="thumbnails">
+                  {% for rs in randomproducts %}
+				<li class="span3">
+				  <div class="thumbnail">
+					<a  href="/product/{{ rs.id }}/{{ rs.slug }}"><img src="{{ rs.image.url }}" alt=""/></a>
+					<div class="caption">
+					  <h5>{{ rs.title }}</h5>
+					  <p> 
+						{{ rs.category.title }}
+					  </p>
+					 
+					  <h4 style="text-align:center"><a class="btn" href="/product/{{ rs.id }}/{{ rs.slug }}"> <i class="icon-zoom-in"></i></a> <a class="btn" href="/product/{{ rs.id }}/{{ rs.slug }}">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="/product/{{ rs.id }}/{{ rs.slug }}">{{ rs.price }} TL</a></h4>
+					</div>
+				  </div>
+				</li>
+				{% endfor %}
+			  </ul>	
+<h4>Strong and Fitness Products </h4>
+			  <ul class="thumbnails">
+                  {% for rs in dayproducts %}
+				<li class="span3">
+				  <div class="thumbnail">
+					<a  href="/product/{{ rs.id }}/{{ rs.slug }}"><img src="{{ rs.image.url }}" alt=""/></a>
+					<div class="caption">
+					  <h5>{{ rs.title }}</h5>
+					  <p>
+						{{ rs.category.title }}
+					  </p>
+
+					  <h4 style="text-align:center"><a class="btn" href="/product/{{ rs.id }}/{{ rs.slug }}"> <i class="icon-zoom-in"></i></a> <a class="btn" href="/product/{{ rs.id }}/{{ rs.slug }}">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="/product/{{ rs.id }}/{{ rs.slug }}">{{ rs.price }} TL</a></h4>
+					</div>
+				  </div>
+				</li>
+				{% endfor %}
+			  </ul>
+		</div>
+		</div>
+	</div>
+</div>

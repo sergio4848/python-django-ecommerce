@@ -1,0 +1,34 @@
+{% extends 'homebase.html' %}
+{% load static %}
+{% block title %} References | {{ setting.title }} {% endblock %}
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% block head %}
+    <link rel='shortcut icon' type='image/x-icon' href='{{ setting.icon.url }}'/>
+{% endblock %}
+
+
+{% block content %}
+
+
+<div id="mainBody">
+<div class="container">
+	<hr class="soften">
+	<hr class="soften"/>
+	<div class="row">
+		<div class="span12">
+		<h4>References</h4>
+		<p>	{{ setting.references | safe }}
+		</p>
+		</div>
+
+
+
+	</div>
+
+</div>
+</div>
+
+
+{% endblock %}

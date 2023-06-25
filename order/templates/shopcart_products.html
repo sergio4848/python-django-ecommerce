@@ -1,0 +1,83 @@
+{% extends 'homebase.html' %}
+{% load static %}
+{% block title %} Shopcart Products | {{ setting.title }} {% endblock %}
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% block head %}
+    <link rel='shortcut icon' type='image/x-icon' href='{{ setting.icon.url }}'/>
+{% endblock %}
+
+
+{% block content %}
+<div id="mainBody">
+	<div class="container">
+	<div class="row">
+<!-- Sidebar ================================================== -->
+<div id="sidebar" class="span3">
+		<div class="well well-small"><a id="myCart" href="/shopcart"><img src="{% static 'themes/images/ico-cart.png' %}" alt="cart">{{ request.session.cart_items }} Items in your cart  </a></div>
+		<ul id="sideManu" class="nav nav-tabs nav-stacked">
+			{% load mptt_tags %}
+            {% recursetree category %}
+			<li><a href="/category/{{ node.id }}/{{ node.slug }}">{{ node.title}}</a></li>
+            {% endrecursetree %}
+		</ul>
+		<br/>
+
+	</div>
+<!-- Sidebar end=============================================== -->
+
+	<div class="span9">
+    <ul class="breadcrumb">
+		<li><a href="/">Home</a> <span class="divider">/</span></li>
+		<li class="active"> SHOPPING CART [ {{ request.session.cart_items }} ]</li>
+    </ul>
+	<h3>  SHOPPING CART [ <small> {{ request.session.cart_items }} </small>]<a href="/" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>
+	<hr class="soft"/>
+
+
+	<table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Title</th>
+				  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+                    <th>Delete</th>
+				</tr>
+              </thead>
+              <tbody>
+              {% for rs in shopcart %}
+                <tr>
+                  <td> <img width="60" src="{{ rs.product.image.url }}" alt=""/></td>
+                  <td>{{ rs.product.title }}</td>
+                  <td>{{ rs.product.price }} TL</td>
+                  <td>{{ rs.quantity }}</td>
+                  <td>{{ rs.amount }}</td>
+                    <td><a href="/order/deletefromcart/{{ rs.id }}"><b>DELETE</b></a></td>
+                </tr>
+				{% endfor %}
+
+                <tr>
+                  <td colspan="6" style="text-align:right">Total Price:	</td>
+                  <td> {{ total }}TL</td>
+                </tr>
+
+				 <tr>
+                  <td colspan="6" style="text-align:right"><strong>TOTAL  {{ total }}TL</strong></td>
+                  <td class="label label-important" style="display:block"> <strong>  {{ total }}TL </strong></td>
+                </tr>
+				</tbody>
+            </table>
+
+
+
+	<a href="/" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
+	<a href="{% url 'orderproduct' %}" class="btn btn-large pull-right">Next <i class="icon-arrow-right"></i></a>
+
+</div>
+</div></div>
+</div>
+<!-- MainBody End ============================= -->
+ {% endblock %}
